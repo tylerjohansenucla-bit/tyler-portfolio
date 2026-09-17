@@ -5,7 +5,7 @@ import { SiteNav } from "@/components/site-nav";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["500", "700"],
+  weight: "500",
 });
 
 export const metadata: Metadata = {
@@ -14,220 +14,229 @@ export const metadata: Metadata = {
     "I draw people, study people, and design for them. Anthropology + Digital Humanities @ UCLA.",
 };
 
-const personalPhotos = [
+const heroPhotos = [
   {
-    src: "/images/about/tyler-car.png",
+    src: "/images/about/car-tyler.png",
     alt: "Tyler smiling in a car wearing a hat and sunglasses",
-    width: 406,
-    height: 230,
+    width: 492,
+    height: 354,
   },
   {
-    src: "/images/about/tyler-camping.png",
-    alt: "Two people leaning over a table outdoors",
-    width: 406,
-    height: 276,
-  },
-  {
-    src: "/images/about/tyler-croatia.png",
-    alt: "Coastal town buildings under a bright blue sky",
-    width: 406,
-    height: 246,
-  },
-] as const;
-
-const portraits = [
-  {
-    src: "/images/about/tyler-painting.png",
-    alt: "Painted portrait",
-    width: 428,
-    height: 554,
-    caption: "1st portrait painting",
-    objectPosition: "center center",
-  },
-  {
-    src: "/images/about/portrait-tyler-1.png",
-    alt: "Pencil portrait sketch of a woman wearing glasses",
-    width: 392,
-    height: 556,
-    objectPosition: "center center",
-  },
-  {
-    src: "/images/about/portrait-tyler-2.png",
-    alt: "Pencil portrait sketch of a man in a cowboy hat",
-    width: 400,
-    height: 556,
-    objectPosition: "center center",
-  },
-  {
-    src: "/images/about/portrait-tyler-3.png",
-    alt: "Pencil portrait sketch of a person with shoulder-length hair",
-    width: 378,
-    height: 556,
-    objectPosition: "center 28%",
-  },
-  {
-    src: "/images/about/portrait-tyler-4.png",
-    alt: "Pencil portrait sketch of a person looking to the right",
-    width: 406,
-    height: 558,
-    objectPosition: "center 42%",
+    src: "/images/about/tyler-sunset.png",
+    alt: "Tyler standing on a beach at sunset",
+    width: 492,
+    height: 480,
   },
 ] as const;
 
 const experiences = [
   {
-    iconSrc: "/images/about/pm-icon.png",
-    iconAlt: "Product Manager Accelerator",
-    title: "Product Manager Accelerator",
-    subtitle: "AI UX Designer Internship",
-    year: "2026",
+    logoSrc: "/images/about/pma-logo.svg",
+    logoAlt: "PM Accelerator",
+    company: "PM Accelerator",
+    role: "AI UX Design Internship",
+    date: "April - June 2026",
   },
   {
-    iconSrc: "/images/about/google-icon.png",
-    iconAlt: "Google",
-    title: "Google UX Design Course",
-    subtitle: "UX Designer Certificate",
-    year: "2025",
+    logoSrc: "/images/about/complication-logo.svg",
+    logoAlt: "Complication",
+    company: "Complication",
+    role: "Product Design Internship",
+    date: "Current",
   },
 ] as const;
 
-const grayText = "text-[#797979]";
+const lifestylePhotos = [
+  {
+    src: "/images/about/vinyl-single.png",
+    alt: "The Rainbow Goblins vinyl record",
+    width: 412,
+    height: 410,
+  },
+  {
+    src: "/images/about/tyler-dog.png",
+    alt: "Tyler crouching beside a white dog",
+    width: 362,
+    height: 410,
+  },
+  {
+    src: "/images/about/tyler-cave.png",
+    alt: "Tyler walking between tall rock walls",
+    width: 308,
+    height: 410,
+  },
+  {
+    src: "/images/about/vinyl-collection.png",
+    alt: "A shelf of vinyl records",
+    width: 306,
+    height: 410,
+  },
+] as const;
+
+const artworks = [
+  {
+    src: "/images/about/painting-tyler.png",
+    alt: "Painted portrait of a woman with red hair and a teal shirt",
+    width: 514,
+    height: 666,
+  },
+  {
+    src: "/images/about/pencil-portrait1.png",
+    alt: "Pencil portrait of a man wearing a cowboy hat",
+    width: 514,
+    height: 714,
+  },
+  {
+    src: "/images/about/pencil-portrait2.png",
+    alt: "Pencil portrait of a woman with glasses, mouth open",
+    width: 514,
+    height: 730,
+  },
+  {
+    src: "/images/about/pencil-portrait3.png",
+    alt: "Pencil portrait of a person with shoulder-length hair",
+    width: 514,
+    height: 756,
+  },
+] as const;
+
+const dividerClassName = "h-px w-full border-0 bg-[#E6E6E6]";
 
 export default function AboutPage() {
   return (
-    <div className={`${inter.className} bg-white`}>
+    <div className="bg-white">
       <div className="page-shell pt-10 pb-24">
         <SiteNav active="About" />
 
-        <main>
-          <section className="mt-16 md:mt-20 min-[1200px]:mt-24" aria-label="Introduction">
-            <h1 className="type-hero-about font-medium tracking-normal text-black">
-              <span className="block">I DRAW PEOPLE</span>
-              <span className="mt-3 block">STUDY PEOPLE</span>
-              <span className="mt-3 block">AND DESIGN FOR THEM</span>
-            </h1>
-            <p className={`mt-5 text-[16px] font-medium tracking-normal ${grayText}`}>
-              Anthropology + Digital Humanities @ UCLA
-            </p>
-          </section>
-
+        <main className={inter.className}>
           <section
-            className="section-space flex flex-col items-start gap-10 min-[1024px]:flex-row min-[1024px]:gap-16 min-[1200px]:gap-[154px]"
-            aria-label="About"
+            className="mt-16 flex flex-col gap-8 md:mt-20 min-[768px]:flex-row min-[768px]:items-start min-[768px]:justify-between min-[768px]:gap-12 min-[1200px]:mt-24"
+            aria-label="Introduction"
           >
-            <div className={`min-w-0 flex-1 text-[16px] font-medium ${grayText}`}>
-              <p>
-                I’m a designer because{" "}
-                <strong className={`font-bold ${grayText}`}>
-                  I’m curious about why people do what they do.
-                </strong>{" "}
-                It’s what pulled me from Anthropology into product design.
+            <div className="min-w-0 max-w-[428px]">
+              <h1 className="text-[32px] font-medium leading-[1.25] tracking-normal text-black">
+                I Draw People
+                <br />
+                Study People
+                <br />
+                and Design for Them
+              </h1>
+              <p className="mt-5 text-[20px] font-medium leading-[1.5] tracking-normal text-[#7B7B7B]">
+                I’m a designer because I’m curious about why people do what they
+                do. It’s what pulled me from Anthropology into product design.
               </p>
-              <p className="mt-4">
+              <p className="mt-4 text-[20px] font-medium leading-[1.5] tracking-normal text-[#7B7B7B]">
                 I gravitate toward design that makes everyday moments feel a
                 little more thoughtful, focusing on the small stuff people
-                interact with on repeat.{" "}
-                <strong className={`font-bold ${grayText}`}>
-                  The goal isn’t just making a product work, but ensuring people
-                  enjoy their experience.
-                </strong>
+                interact with on repeat. The goal isn’t just making a product
+                work, but ensuring people enjoy their experience.
               </p>
-              <p className="mt-6">Outside of design I’m</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5">
-                <li>digging through a record store 💽</li>
-                <li>camping somewhere with no service 🏕️</li>
-                <li>
-                  spending several hours into a portrait I’ve spent too long on
-                  🖼️
-                </li>
-                <li>getting some exercise 🏋️</li>
-              </ul>
             </div>
 
-            <div className="flex w-full max-w-[280px] shrink-0 flex-col gap-5 min-[1024px]:w-[203px] min-[1024px]:max-w-none">
-              {personalPhotos.map((photo) => (
+            <div className="flex w-full shrink-0 flex-col gap-4 min-[768px]:w-[220px]">
+              {heroPhotos.map((photo, index) => (
                 <Image
                   key={photo.src}
                   src={photo.src}
                   alt={photo.alt}
                   width={photo.width}
                   height={photo.height}
-                    sizes="(min-width: 1024px) 203px, 280px"
+                  sizes="(min-width: 768px) 220px, 100vw"
+                  preload={index === 0}
                   className="h-auto w-full"
                 />
               ))}
             </div>
           </section>
 
-          <section className="section-space" aria-label="Selected artwork">
-            <h2 className="type-heading-md font-medium tracking-normal text-black">
-              Selected Artwork
-            </h2>
+          <hr className={`${dividerClassName} mt-[36px]`} />
 
-            <div
-              className="mt-6 flex min-w-0 max-w-full items-start gap-[35px] overflow-x-auto overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              tabIndex={0}
-              aria-label="Portrait artwork, scroll horizontally"
-            >
-              {portraits.map((portrait) => (
-                <figure key={portrait.src} className="w-[196px] shrink-0">
-                  <div className="about-artwork-frame">
-                    <Image
-                      src={portrait.src}
-                      alt={portrait.alt}
-                      fill
-                      sizes="196px"
-                      className="about-artwork object-cover"
-                      style={{ objectPosition: portrait.objectPosition }}
-                    />
-                  </div>
-                  {"caption" in portrait && portrait.caption ? (
-                    <figcaption
-                      className={`mt-2 text-left text-[14px] font-medium ${grayText}`}
-                    >
-                      {portrait.caption}
-                    </figcaption>
-                  ) : null}
-                </figure>
-              ))}
-            </div>
-          </section>
-
-          <section className="section-space" aria-label="Experience">
-            <h2 className="type-heading-md font-medium tracking-normal text-black">
-              Experience
-            </h2>
-
-            <ul className="mt-6 flex flex-col gap-8">
+          <section className="py-[66px]" aria-label="Experience">
+            <ul className="flex flex-col gap-8 min-[768px]:flex-row min-[768px]:gap-16">
               {experiences.map((experience) => (
-                <li
-                  key={experience.title}
-                  className="flex items-center gap-3 min-[400px]:gap-4"
-                >
-                  <Image
-                    src={experience.iconSrc}
-                    alt={experience.iconAlt}
-                    width={118}
-                    height={112}
-                    sizes="40px"
-                    className="h-10 w-10 shrink-0 object-contain"
-                  />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[16px] font-medium text-black">
-                      {experience.title}
-                    </p>
-                    <p className={`text-[16px] font-medium ${grayText}`}>
-                      {experience.subtitle}
+                <li key={experience.company} className="min-w-0">
+                  <div className="flex items-center gap-3">
+                    <Image
+                      src={experience.logoSrc}
+                      alt={experience.logoAlt}
+                      width={40}
+                      height={40}
+                      className="h-10 w-10 shrink-0"
+                    />
+                    <p className="text-[20px] font-medium leading-[1.3] text-black">
+                      {experience.company}
                     </p>
                   </div>
-                  <p
-                    className={`shrink-0 text-[16px] font-medium ${grayText}`}
-                  >
-                    {experience.year}
+                  <p className="mt-4 text-[16px] font-medium leading-[1.4] text-black">
+                    {experience.role}
+                  </p>
+                  <p className="mt-3 text-[16px] font-medium leading-[1.4] text-[#7B7B7B]">
+                    {experience.date}
                   </p>
                 </li>
               ))}
             </ul>
+          </section>
+
+          <hr className={dividerClassName} />
+
+          <section className="py-[66px]" aria-label="Education">
+            <p className="text-[24px] font-medium leading-[1.4] tracking-normal text-black">
+              B.A. Anthropology / Digital Humanities Minor at UCLA
+            </p>
+          </section>
+
+          <hr className={dividerClassName} />
+
+          <section className="pt-[66px]" aria-label="Outside of design">
+            <h2 className="text-[24px] font-medium leading-[1.4] tracking-normal text-black">
+              Outside of design I’m
+            </h2>
+            <ul className="mt-5 list-disc space-y-3 pl-6 text-[20px] font-medium leading-[1.5] text-[#7B7B7B]">
+              <li>digging through a record store 💿</li>
+              <li>camping somewhere with no service 🏕️</li>
+              <li>
+                spending several hours into a portrait I’ve spent too long on
+                🖼️
+              </li>
+              <li>getting some exercise 🐐</li>
+            </ul>
+
+            <div className="about-lifestyle mt-8">
+              {lifestylePhotos.map((photo) => (
+                <Image
+                  key={photo.src}
+                  src={photo.src}
+                  alt={photo.alt}
+                  width={photo.width}
+                  height={photo.height}
+                  sizes="(min-width: 768px) 190px, 45vw"
+                  className="about-lifestyle-image"
+                />
+              ))}
+            </div>
+          </section>
+
+          <p className="mt-[81px] text-center text-[20px] font-medium leading-[1.4] text-black">
+            Artwork ↓
+          </p>
+          <hr className={`${dividerClassName} mt-[66px]`} />
+
+          <section
+            className="about-artwork mt-[66px]"
+            aria-label="Artwork"
+          >
+            {artworks.map((artwork) => (
+              <Image
+                key={artwork.src}
+                src={artwork.src}
+                alt={artwork.alt}
+                width={artwork.width}
+                height={artwork.height}
+                sizes="(min-width: 768px) 257px, 100vw"
+                className="h-auto w-full"
+              />
+            ))}
           </section>
         </main>
       </div>

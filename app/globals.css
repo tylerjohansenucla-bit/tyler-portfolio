@@ -169,21 +169,49 @@ body {
   }
 }
 
-/* About Selected Artwork: equal 196×278 frames */
-.about-artwork-frame {
-  position: relative;
-  width: 196px;
-  height: 278px;
-  flex: 0 0 196px;
-  overflow: hidden;
+/* About page — lifestyle row and artwork gallery */
+.about-lifestyle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  min-width: 0;
 }
 
-.about-artwork-frame img {
+.about-lifestyle-image {
   display: block;
-  width: 100% !important;
-  height: 100% !important;
-  max-width: none !important;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
+  object-position: center;
+}
+
+.about-artwork {
+  width: min(634px, 100%);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 48px;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .about-lifestyle {
+    grid-template-columns: 412fr 362fr 308fr 306fr;
+    gap: 16px;
+  }
+
+  .about-lifestyle-image {
+    aspect-ratio: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .about-artwork {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 120px;
+    row-gap: 120px;
+  }
 }
 
 .comparison-scroll {
