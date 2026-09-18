@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { HomepageIntroProvider } from "@/components/homepage-intro";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,7 +30,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} overflow-x-clip antialiased`}
     >
-      <body className="bg-white font-sans text-black">{children}</body>
+      <body className="bg-white font-sans text-black">
+        <HomepageIntroProvider>{children}</HomepageIntroProvider>
+      </body>
     </html>
   );
 }

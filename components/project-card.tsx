@@ -32,7 +32,7 @@ export function ProjectCard({
     <article>
       <Link
         href={href}
-        className={`${inter.className} group -m-2 block cursor-pointer rounded-[12px] p-2 transition-colors duration-200 ease-out [@media(hover:hover)]:hover:bg-[#F7F7F7]`}
+        className={`${inter.className} project-card-link group -m-2 block cursor-pointer rounded-[12px] p-2 [@media(hover:hover)]:hover:bg-[#F7F7F7]`}
       >
         <span className="relative block overflow-hidden rounded-2xl">
           <Image
@@ -42,11 +42,11 @@ export function ProjectCard({
             height={imageHeight}
             preload={preload}
             sizes="(min-width: 1200px) 760px, 100vw"
-            className="h-auto w-full rounded-2xl"
+            className="project-card-cover h-auto w-full rounded-2xl"
           />
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 rounded-2xl bg-[rgba(0,0,0,0)] transition-colors duration-200 ease-out [@media(hover:hover)]:group-hover:bg-[rgba(0,0,0,0.04)]"
+            className="project-card-overlay pointer-events-none absolute inset-0 rounded-2xl bg-[rgba(0,0,0,0)]"
           />
         </span>
         <div className="mt-[16px]">

@@ -12,6 +12,7 @@ type CaseStudyImageProps = {
   roundedClassName?: string;
   sizes?: string;
   preload?: boolean;
+  mediaHover?: boolean;
 };
 
 export function CaseStudyImage({
@@ -26,9 +27,10 @@ export function CaseStudyImage({
   roundedClassName,
   sizes,
   preload = false,
+  mediaHover = false,
 }: CaseStudyImageProps) {
   if (src && width && height) {
-    return (
+    const image = (
       <Image
         src={src}
         alt={alt ?? label}
@@ -36,8 +38,24 @@ export function CaseStudyImage({
         height={height}
         sizes={sizes}
         preload={preload}
-        className={`h-auto max-w-full ${roundedClassName ?? ""} ${className ?? "w-full"}`}
+        className={
+          mediaHover
+            ? "media-hover-img"
+            : `h-auto max-w-full ${roundedClassName ?? ""} ${className ?? "w-full"}`
+        }
       />
+    );
+
+    if (!mediaHover) {
+      return image;
+    }
+
+    return (
+      <div
+        className={`media-hover-frame overflow-hidden ${roundedClassName ?? ""} ${className ?? "w-full"}`}
+      >
+        {image}
+      </div>
     );
   }
 

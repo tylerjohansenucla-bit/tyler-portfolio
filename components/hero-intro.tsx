@@ -1,14 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import {
+  HERO_CURSOR_HIDE_DELAY,
+  runHeroTyping,
+} from "@/components/hero-type";
 
 const LINE_ONE = "Hey,";
 const LINE_TWO = "I’m Tyler Johansen";
 const FULL = `${LINE_ONE}\n${LINE_TWO}`;
-const MS_PER_CHAR = 60;
-const LINE_PAUSE = 120;
-const CURSOR_HIDE_DELAY = 220;
 
 const nameRowClassName =
   "inline-flex max-w-full flex-wrap items-center gap-1.5 min-[768px]:gap-3";
@@ -21,19 +22,31 @@ function Glasses({ visible }: { visible: boolean }) {
       width={160}
       height={80}
       preload
-      className={`hero-glasses h-auto origin-center ${
-        visible ? "opacity-100 scale-100" : "opacity-0 scale-[0.96]"
-      }`}
+      className={`hero-glasses h-auto origin-center${visible ? " is-in" : ""}`}
     />
   );
 }
 
-export function HeroIntro({ className }: { className: string }) {
-  const [charCount, setCharCount] = useState(0);
-  const [done, setDone] = useState(false);
-  const [showCursor, setShowCursor] = useState(true);
+export function HeroIntro({
+  className,
+  skip = false,
+  onComplete,
+}: {
+  className: string;
+  skip?: boolean;
+  onComplete?: () => void;
+}) {
+  const [charCount, setCharCount] = useState(skip ? FULL.length : 0);
+  const [done, setDone] = useState(skip);
+  const [showCursor, setShowCursor] = useState(!skip);
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   useLayoutEffect(() => {
+    if (skip) {
+      return;
+    }
+
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -42,33 +55,25 @@ export function HeroIntro({ className }: { className: string }) {
       setCharCount(FULL.length);
       setDone(true);
       setShowCursor(false);
+      onCompleteRef.current?.();
       return;
     }
 
-    let count = 0;
-    let timeoutId = 0;
+    let hideId = 0;
+    const cancelTyping = runHeroTyping(FULL, setCharCount, () => {
+      setDone(true);
+      onCompleteRef.current?.();
+      hideId = window.setTimeout(
+        () => setShowCursor(false),
+        HERO_CURSOR_HIDE_DELAY,
+      );
+    });
 
-    const tick = () => {
-      count += 1;
-      setCharCount(count);
-
-      if (count >= FULL.length) {
-        setDone(true);
-        timeoutId = window.setTimeout(
-          () => setShowCursor(false),
-          CURSOR_HIDE_DELAY,
-        );
-        return;
-      }
-
-      const delay = FULL[count - 1] === "\n" ? LINE_PAUSE : MS_PER_CHAR;
-      timeoutId = window.setTimeout(tick, delay);
+    return () => {
+      cancelTyping();
+      window.clearTimeout(hideId);
     };
-
-    timeoutId = window.setTimeout(tick, MS_PER_CHAR);
-
-    return () => window.clearTimeout(timeoutId);
-  }, []);
+  }, [skip]);
 
   const typed = FULL.slice(0, charCount);
   const newlineIndex = typed.indexOf("\n");

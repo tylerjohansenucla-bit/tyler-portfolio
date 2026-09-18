@@ -128,7 +128,7 @@ export function CaseStudyNav({
           className="pointer-events-auto inline-flex items-center gap-1 text-[14px] font-medium leading-[23.38px] text-[#777777]"
         >
           <span aria-hidden="true">‹</span>
-          Back
+          <span className="text-link">Back</span>
         </Link>
         <ul className="mt-8 flex flex-col gap-2">
           {items.map((item) => {
