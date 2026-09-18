@@ -4,12 +4,16 @@ import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
 import {
   HERO_CURSOR_HIDE_DELAY,
+  HERO_PAUSE_AFTER_HEY,
+  HERO_PAUSE_AFTER_NAME,
   runHeroTyping,
 } from "@/components/hero-type";
 
 const LINE_ONE = "Hey,";
 const LINE_TWO = "I’m Tyler Johansen";
 const FULL = `${LINE_ONE}\n${LINE_TWO}`;
+/** Index of the comma in “Hey,” — pause before continuing. */
+const HEY_COMMA_INDEX = LINE_ONE.indexOf(",");
 
 const nameRowClassName =
   "inline-flex max-w-full flex-wrap items-center gap-1.5 min-[768px]:gap-3";
@@ -60,17 +64,26 @@ export function HeroIntro({
     }
 
     let hideId = 0;
-    const cancelTyping = runHeroTyping(FULL, setCharCount, () => {
-      setDone(true);
-      onCompleteRef.current?.();
-      hideId = window.setTimeout(
-        () => setShowCursor(false),
-        HERO_CURSOR_HIDE_DELAY,
-      );
-    });
+    let namePauseId = 0;
+    const cancelTyping = runHeroTyping(
+      FULL,
+      setCharCount,
+      () => {
+        namePauseId = window.setTimeout(() => {
+          setDone(true);
+          onCompleteRef.current?.();
+          hideId = window.setTimeout(
+            () => setShowCursor(false),
+            HERO_CURSOR_HIDE_DELAY,
+          );
+        }, HERO_PAUSE_AFTER_NAME);
+      },
+      { [HEY_COMMA_INDEX]: HERO_PAUSE_AFTER_HEY },
+    );
 
     return () => {
       cancelTyping();
+      window.clearTimeout(namePauseId);
       window.clearTimeout(hideId);
     };
   }, [skip]);

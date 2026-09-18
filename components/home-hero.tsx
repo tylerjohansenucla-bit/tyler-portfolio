@@ -14,7 +14,10 @@ import { useHomepageIntro } from "@/components/homepage-intro";
 import {
   HERO_CURSOR_HIDE_DELAY,
   HERO_GLASSES_DELAY,
-  HERO_GROUP_PAUSE,
+  HERO_PAUSE_AFTER_DESIGNS_COMMA,
+  HERO_PAUSE_AFTER_GLASSES,
+  HERO_PAUSE_AFTER_STRATEGIES,
+  HERO_PAUSE_AFTER_UCLA,
   runHeroTyping,
 } from "@/components/hero-type";
 
@@ -28,6 +31,8 @@ const TAG_LINE_TWO = "driving outcomes and shaping ";
 const TAG_LINE_THREE = "strategies";
 const TAG_TYPE = `${TAG_LINE_ONE}\n${TAG_LINE_TWO}\n${TAG_LINE_THREE}`;
 const UCLA_LINE = "I study Anthro and DH at UCLA";
+/** Index of the comma in “designs,” within TAG_TYPE. */
+const DESIGNS_COMMA_INDEX = TAG_TYPE.indexOf(",");
 
 function TaglineBreak() {
   return <br className="hidden min-[768px]:inline" />;
@@ -118,34 +123,43 @@ export function HomeHero({ className }: { className: string }) {
 
     const startTagline = window.setTimeout(() => {
       setShowTagCursor(true);
-      cancelTypingRef.current = runHeroTyping(TAG_TYPE, setTagCount, () => {
-        const hideTag = window.setTimeout(
-          () => setShowTagCursor(false),
-          HERO_CURSOR_HIDE_DELAY,
-        );
-        timersRef.current.push(hideTag);
-
-        const startUcla = window.setTimeout(() => {
-          setShowTagCursor(false);
-          setShowUclaCursor(true);
-          cancelTypingRef.current = runHeroTyping(
-            UCLA_LINE,
-            setUclaCount,
-            () => {
-              setEntered(true);
-              markHomepageIntroPlayed();
-              const hideUcla = window.setTimeout(
-                () => setShowUclaCursor(false),
-                HERO_CURSOR_HIDE_DELAY,
-              );
-              timersRef.current.push(hideUcla);
-            },
+      cancelTypingRef.current = runHeroTyping(
+        TAG_TYPE,
+        setTagCount,
+        () => {
+          const hideTag = window.setTimeout(
+            () => setShowTagCursor(false),
+            HERO_CURSOR_HIDE_DELAY,
           );
-        }, HERO_GROUP_PAUSE);
+          timersRef.current.push(hideTag);
 
-        timersRef.current.push(startUcla);
-      });
-    }, HERO_GLASSES_DELAY + HERO_GROUP_PAUSE);
+          const startUcla = window.setTimeout(() => {
+            setShowTagCursor(false);
+            setShowUclaCursor(true);
+            cancelTypingRef.current = runHeroTyping(
+              UCLA_LINE,
+              setUclaCount,
+              () => {
+                const revealSocials = window.setTimeout(() => {
+                  setEntered(true);
+                  markHomepageIntroPlayed();
+                }, HERO_PAUSE_AFTER_UCLA);
+                timersRef.current.push(revealSocials);
+
+                const hideUcla = window.setTimeout(
+                  () => setShowUclaCursor(false),
+                  HERO_CURSOR_HIDE_DELAY,
+                );
+                timersRef.current.push(hideUcla);
+              },
+            );
+          }, HERO_PAUSE_AFTER_STRATEGIES);
+
+          timersRef.current.push(startUcla);
+        },
+        { [DESIGNS_COMMA_INDEX]: HERO_PAUSE_AFTER_DESIGNS_COMMA },
+      );
+    }, HERO_GLASSES_DELAY + HERO_PAUSE_AFTER_GLASSES);
 
     timersRef.current.push(startTagline);
   }, [skip, markHomepageIntroPlayed]);

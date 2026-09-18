@@ -18,15 +18,15 @@ export default function Home() {
           <HomeHero className={inter.className} />
 
           <section
-            className="mt-16 md:mt-20 min-[1200px]:mt-24"
+            className="mt-[88px] md:mt-[112px] min-[1200px]:mt-[128px]"
             aria-label="Selected work"
           >
             <ScrollReveal>
               <ProjectCard
                 href="/greencure"
-                imageSrc="/images/greencure-cover.png"
+                imageSrc="/images/greencure-homecover.png"
                 imageAlt="GreenCure mobile app screens on two phones"
-                imageWidth={1462}
+                imageWidth={1520}
                 imageHeight={1268}
                 title="Simplifying plant care and recovery"
                 role="Researcher + Product Designer"

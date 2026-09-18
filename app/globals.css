@@ -716,7 +716,7 @@ html.artwork-lightbox-open body > :not(.artwork-lightbox) {
   justify-content: center;
   gap: 28px;
   background-color: #ffffff;
-  border: 1px solid #989898;
+  border: 1px solid #B9B9B9;
   border-radius: 15px;
   transform: none;
   filter: none;

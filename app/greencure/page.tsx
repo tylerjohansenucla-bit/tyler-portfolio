@@ -47,10 +47,10 @@ export default function GreenCurePage() {
           <ScrollReveal>
             <CaseStudyImage
               label="GreenCure hero — two phone mockups"
-              src="/images/greencure/greencure-hero.png"
+              src="/images/greencure-homecover.png"
               alt="GreenCure home dashboard and plant alignment camera on two phones"
               width={1520}
-              height={960}
+              height={1268}
               sizes="(min-width: 1200px) 760px, 100vw"
               preload
               mediaHover
