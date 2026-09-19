@@ -53,14 +53,13 @@ export default function GreenCurePage() {
               height={1268}
               sizes="(min-width: 1200px) 760px, 100vw"
               preload
-              mediaHover
               roundedClassName="rounded-[24px]"
               className="mt-8 w-full"
             />
           </ScrollReveal>
 
           <ScrollReveal delay={70}>
-            <div className="mt-10 grid w-full grid-cols-1 gap-6 min-[600px]:grid-cols-3 min-[600px]:gap-4 min-[1200px]:gap-0">
+            <div className="mt-10 grid w-max max-w-full grid-cols-1 gap-6 min-[600px]:grid-cols-[max-content_max-content_max-content] min-[600px]:gap-x-[72px]">
               <div>
                 <p className={`${captionClassName} m-0`}>Role</p>
                 <p className="mt-1 text-[16px] font-medium leading-[26.72px] text-[#404040]">
@@ -169,7 +168,6 @@ export default function GreenCurePage() {
                 width={1520}
                 height={986}
                 sizes="(min-width: 1200px) 760px, 100vw"
-                mediaHover
                 className="mt-12 w-full"
               />
             </ScrollReveal>
@@ -373,7 +371,6 @@ export default function GreenCurePage() {
                       width={1060}
                       height={704}
                       sizes="(min-width: 768px) 760px, 760px"
-                      mediaHover
                       className="w-full"
                     />
                     <div className="comparison-captions mt-4">
@@ -491,7 +488,6 @@ export default function GreenCurePage() {
                   width={992}
                   height={932}
                   sizes="(min-width: 1200px) 620px, 100vw"
-                  mediaHover
                   className="w-full"
                 />
                 <div className="mt-4 grid grid-cols-2 gap-8">
