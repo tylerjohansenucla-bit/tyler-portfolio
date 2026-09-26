@@ -10,6 +10,7 @@ type CaseStudyVideoProps = {
   className?: string;
   backgroundClassName?: string;
   objectPosition?: string;
+  objectFit?: "cover" | "contain";
   scale?: number;
 };
 
@@ -21,6 +22,7 @@ export function CaseStudyVideo({
   className,
   backgroundClassName = "bg-black",
   objectPosition = "center center",
+  objectFit = "cover",
   scale = 1,
 }: CaseStudyVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -64,7 +66,7 @@ export function CaseStudyVideo({
         disablePictureInPicture
         disableRemotePlayback
         aria-label={label}
-        className="pointer-events-none absolute inset-0 h-full w-full max-w-none border-0 bg-transparent object-cover outline-none"
+        className={`pointer-events-none absolute inset-0 h-full w-full max-w-none border-0 bg-transparent outline-none ${objectFit === "contain" ? "object-contain" : "object-cover"}`}
         style={{
           objectPosition,
           transform: scale === 1 ? undefined : `scale(${scale})`,

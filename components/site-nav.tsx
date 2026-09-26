@@ -13,6 +13,155 @@ const RESUME_URL =
 
 const TOP_THRESHOLD = 40;
 const DIRECTION_THRESHOLD = 10;
+const PILL_SAMPLE_TOP = 16;
+const PILL_SAMPLE_HEIGHT = 58;
+
+type Rgb = { r: number; g: number; b: number };
+
+const WHITE: Rgb = { r: 255, g: 255, b: 255 };
+const imageColorCache = new Map<string, Rgb>();
+let sampleCanvas: HTMLCanvasElement | null = null;
+let resamplePill: (() => void) | null = null;
+
+function parseCssColor(input: string) {
+  const match = input.match(
+    /rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?\s*\)/,
+  );
+  if (!match) return null;
+  return {
+    r: Number(match[1]),
+    g: Number(match[2]),
+    b: Number(match[3]),
+    a: match[4] === undefined ? 1 : Number(match[4]),
+  };
+}
+
+function lightness({ r, g, b }: Rgb) {
+  return (Math.max(r, g, b) + Math.min(r, g, b)) / 2 / 255;
+}
+
+function toSubtleTint(color: Rgb): Rgb {
+  const l = lightness(color);
+  if (l >= 0.985) return WHITE;
+
+  const keep = 0.2 + l * 0.5;
+  const mix = (channel: number) => 255 * (1 - keep) + channel * keep;
+  const mixed = {
+    r: mix(color.r),
+    g: mix(color.g),
+    b: mix(color.b),
+  };
+  const average = (mixed.r + mixed.g + mixed.b) / 3;
+  const chromaKeep = 0.88;
+
+  return {
+    r: mixed.r * chromaKeep + average * (1 - chromaKeep),
+    g: mixed.g * chromaKeep + average * (1 - chromaKeep),
+    b: mixed.b * chromaKeep + average * (1 - chromaKeep),
+  };
+}
+
+function formatRgb(color: Rgb) {
+  const quantize = (channel: number) => Math.round(channel / 2) * 2;
+  return `rgb(${quantize(color.r)}, ${quantize(color.g)}, ${quantize(color.b)})`;
+}
+
+function averageImageColor(img: HTMLImageElement): Rgb | null {
+  const key = img.currentSrc || img.src;
+  const cached = imageColorCache.get(key);
+  if (cached) return cached;
+  if (!img.complete || img.naturalWidth === 0) {
+    img.addEventListener("load", () => resamplePill?.(), { once: true });
+    return null;
+  }
+
+  const canvas = sampleCanvas ?? document.createElement("canvas");
+  sampleCanvas = canvas;
+  const size = 24;
+  canvas.width = size;
+  canvas.height = size;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  if (!context) return null;
+
+  try {
+    context.drawImage(img, 0, 0, size, size);
+    const { data } = context.getImageData(0, 0, size, size);
+    const margin = 3;
+    let r = 0;
+    let g = 0;
+    let b = 0;
+    let count = 0;
+
+    for (let y = 0; y < size; y += 1) {
+      for (let x = 0; x < size; x += 1) {
+        const onField =
+          x < margin || y < margin || x >= size - margin || y >= size - margin;
+        if (!onField) continue;
+        const index = (y * size + x) * 4;
+        if (data[index + 3] < 200) continue;
+        r += data[index];
+        g += data[index + 1];
+        b += data[index + 2];
+        count += 1;
+      }
+    }
+
+    if (count === 0) return null;
+    const color = { r: r / count, g: g / count, b: b / count };
+    imageColorCache.set(key, color);
+    return color;
+  } catch {
+    return null;
+  }
+}
+
+function surfaceAt(x: number, y: number): Rgb {
+  const stack = document.elementsFromPoint(x, y);
+  for (const el of stack) {
+    if (el.closest("header")) continue;
+    if (el instanceof HTMLImageElement) {
+      const bounds = el.getBoundingClientRect();
+      if (bounds.width >= 80 && bounds.height >= 80) {
+        const average = averageImageColor(el);
+        if (average) return average;
+      }
+      continue;
+    }
+    const background = parseCssColor(getComputedStyle(el).backgroundColor);
+    if (background && background.a >= 0.9) {
+      return { r: background.r, g: background.g, b: background.b };
+    }
+  }
+  return WHITE;
+}
+
+function sampleUnderPill(pill: HTMLElement) {
+  const rect = pill.getBoundingClientRect();
+  if (rect.width < 8) return formatRgb(WHITE);
+
+  const xs = [0.28, 0.5, 0.72];
+  const ys = [0.3, 0.5, 0.7];
+  let r = 0;
+  let g = 0;
+  let b = 0;
+
+  for (const y of ys) {
+    for (const x of xs) {
+      const tint = toSubtleTint(
+        surfaceAt(
+          rect.left + rect.width * x,
+          PILL_SAMPLE_TOP + PILL_SAMPLE_HEIGHT * y,
+        ),
+      );
+      r += tint.r;
+      g += tint.g;
+      b += tint.b;
+    }
+  }
+
+  const samples = xs.length * ys.length;
+  return formatRgb({ r: r / samples, g: g / samples, b: b / samples });
+}
 
 const navItems = [
   { href: "/", label: "Work" },
@@ -79,9 +228,11 @@ function NavCluster({
 export function SiteNav({ active }: SiteNavProps) {
   const [atTop, setAtTop] = useState(true);
   const [floatingVisible, setFloatingVisible] = useState(false);
+  const [pillBackground, setPillBackground] = useState("rgb(255, 255, 255)");
   const lastY = useRef(0);
   const accumulated = useRef(0);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const pillRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     lastY.current = window.scrollY;
@@ -139,6 +290,35 @@ export function SiteNav({ active }: SiteNavProps) {
     };
   }, []);
 
+  useEffect(() => {
+    let frame = 0;
+
+    const update = () => {
+      const pill = pillRef.current;
+      if (!pill) return;
+      const next = sampleUnderPill(pill);
+      setPillBackground((current) => (current === next ? current : next));
+    };
+
+    const requestUpdate = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    };
+
+    resamplePill = requestUpdate;
+    requestUpdate();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    window.addEventListener("load", requestUpdate);
+    return () => {
+      if (resamplePill === requestUpdate) resamplePill = null;
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+      window.removeEventListener("load", requestUpdate);
+    };
+  }, []);
+
   const showFloating = !atTop && floatingVisible;
 
   return (
@@ -171,7 +351,11 @@ export function SiteNav({ active }: SiteNavProps) {
         aria-hidden={showFloating ? undefined : true}
         inert={showFloating ? undefined : true}
       >
-        <div className="site-nav-float">
+        <div
+          ref={pillRef}
+          className="site-nav-float"
+          style={{ backgroundColor: pillBackground }}
+        >
           <Link
             href="/"
             className="inline-flex items-center text-base font-bold text-black max-md:min-h-11"

@@ -135,15 +135,19 @@ export function CaseStudyNav({
             const isActive = activeId === item.id;
 
             return (
-              <li key={item.id}>
+              <li key={item.id} className="relative">
+                <span
+                  aria-hidden="true"
+                  className={`pointer-events-none absolute top-1/2 right-full mr-2 size-1.5 -translate-y-1/2 rounded-full bg-[#404040] transition-opacity duration-200 ease-out motion-reduce:transition-none ${
+                    isActive ? "opacity-100" : "opacity-0"
+                  }`}
+                />
                 <a
                   href={`#${item.id}`}
                   data-section={item.id}
                   aria-current={isActive ? "location" : undefined}
                   onClick={(event) => handleNavClick(event, item.id)}
-                  className={`pointer-events-auto text-[14px] font-medium leading-[23.38px] transition-colors duration-200 ease-out ${
-                    isActive ? "text-black" : "text-[#777777]"
-                  }`}
+                  className="pointer-events-auto text-[14px] font-medium leading-[23.38px] text-[#777777]"
                 >
                   {item.label}
                 </a>

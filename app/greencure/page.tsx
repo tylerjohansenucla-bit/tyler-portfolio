@@ -516,13 +516,14 @@ export default function GreenCurePage() {
             <ScrollReveal delay={80}>
               <div className="mx-auto mt-12 w-full max-w-[288px]">
                 <CaseStudyVideo
-                  src="/videos/greencure/greencure-final-1.mp4"
+                  src="/videos/greencure/GreenCure_final_showcase1.mp4"
                   label="Final GreenCure home screen showing Good Morning, Tyler"
                   width={576}
                   height={1150}
                   className="w-full"
+                  backgroundClassName="bg-white"
                   objectPosition="center center"
-                  scale={1.14}
+                  objectFit="contain"
                 />
               </div>
             </ScrollReveal>
@@ -537,13 +538,14 @@ export default function GreenCurePage() {
             <ScrollReveal delay={80}>
               <div className="mx-auto mt-12 w-full max-w-[278px]">
                 <CaseStudyVideo
-                  src="/videos/greencure/greencure-final-2.mp4"
+                  src="/videos/greencure/GreenCure_final_showcase2.mp4"
                   label="Final GreenCure home screen showing plant recovery"
                   width={556}
                   height={1120}
                   className="w-full"
+                  backgroundClassName="bg-white"
                   objectPosition="center center"
-                  scale={1.14}
+                  objectFit="contain"
                 />
               </div>
             </ScrollReveal>
