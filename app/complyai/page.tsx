@@ -23,7 +23,7 @@ const complyAiNavItems: readonly CaseStudyNavItem[] = [
   { id: "research", label: "Research" },
   { id: "design-decisions", label: "Design Decisions" },
   { id: "final-design", label: "Final Design" },
-  { id: "designing-with-ai", label: "Designing with AI" },
+  { id: "designing-with-ai", label: "Utilizing AI" },
   { id: "reflection", label: "Reflection" },
 ];
 
@@ -68,7 +68,7 @@ export default function ComplyAiPage() {
               width={1520}
               height={960}
               sizes="(min-width: 1200px) 760px, 100vw"
-              preload
+              preload
               roundedClassName="rounded-[10px]"
               className="mt-8 w-full"
             />
@@ -207,7 +207,7 @@ export default function ComplyAiPage() {
                 alt="ComplyAI Gap Analysis Dashboard with overall score, findings, and recommended tasks"
                 width={1520}
                 height={1840}
-                sizes="(min-width: 1200px) 760px, 100vw"
+                sizes="(min-width: 1200px) 760px, 100vw"
                 roundedClassName="rounded-[10px]"
                 className="mt-12 w-full"
               />
@@ -279,7 +279,7 @@ export default function ComplyAiPage() {
                       alt="Three dashboard iterations showing a messy metrics view, a mid-fidelity exploration, and the final compliance snapshot"
                       width={1516}
                       height={478}
-                      sizes="(min-width: 768px) 760px, 760px"
+                      sizes="(min-width: 768px) 760px, 760px"
                       roundedClassName="rounded-[10px]"
                       className="w-full"
                     />
@@ -346,7 +346,7 @@ export default function ComplyAiPage() {
                   alt="Compliance finding card that describes a missing human-in-the-loop interface without a next step"
                   width={1520}
                   height={275}
-                  sizes="(min-width: 1200px) 760px, 100vw"
+                  sizes="(min-width: 1200px) 760px, 100vw"
                   roundedClassName="rounded-[10px]"
                   className="w-full"
                 />
@@ -365,7 +365,7 @@ export default function ComplyAiPage() {
                     alt="Compliance finding card with a recommended task to add a reviewer checkpoint"
                     width={1466}
                     height={346}
-                    sizes="(min-width: 1200px) 760px, 100vw"
+                    sizes="(min-width: 1200px) 760px, 100vw"
                     className="w-full"
                   />
                 </div>
@@ -397,7 +397,7 @@ export default function ComplyAiPage() {
 
           <CaseStudySection
             id="designing-with-ai"
-            label="Designing with AI"
+            label="Utilizing AI"
             title="Exploring faster with AI"
             intro={
               <p className={bodyClassName}>
@@ -416,7 +416,7 @@ export default function ComplyAiPage() {
                   alt="Two AI-assisted layout explorations comparing a broad compliance overview with a prioritized findings view"
                   width={1514}
                   height={478}
-                  sizes="(min-width: 1200px) 760px, 100vw"
+                  sizes="(min-width: 1200px) 760px, 100vw"
                   roundedClassName="rounded-[10px]"
                   className="w-full"
                 />
