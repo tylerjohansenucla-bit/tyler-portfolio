@@ -57,7 +57,7 @@ export default function ComplyAiPage() {
             {" < ComplyAI"}
           </p>
           <h1 className="type-hero-case mt-3 font-medium text-black">
-            Simplifying AI compliance for small businesses
+            Designing a clearer path to AI compliance
           </h1>
 
           <ScrollReveal>

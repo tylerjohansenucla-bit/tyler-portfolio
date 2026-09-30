@@ -43,7 +43,7 @@ export default function Home() {
                 imageAlt="ComplyAI gap analysis dashboard on a laptop"
                 imageWidth={1520}
                 imageHeight={1268}
-                title="Simplifying AI compliance for small businesses"
+                title="Designing a clearer path to AI compliance"
                 role="Researcher + Product Designer"
               />
             </ScrollReveal>
